@@ -10,4 +10,9 @@ class Post extends Model
 
     // protected $fillable = ["title", "body"];    //masukkan kolom mana saja yang mau diisi
     protected $guarded = [];
+
+    //One To Many
+    public function author(){                   
+        return $this -> belongsTo('App\User', 'user_id');        //ini karena d post ada fk user
+    }
 }

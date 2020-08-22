@@ -8,6 +8,9 @@ use App\Post;       //memanggil model post
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+
+// use App\User;
 
 class PostController extends Controller
 {
@@ -76,9 +79,15 @@ class PostController extends Controller
         // dd($posts);
         */
 
-        /*--------- Ini Pakai Eloquent ORM Model (Materi CRUD di WEEK 4)----------*/
+        /*--------- Ini Pakai Eloquent ORM Model (Materi CRUD di WEEK 4)----------
         $posts = Post::all();
-        // dd($post);
+        // dd($posts); */
+
+        
+        /*--------- Ini Eloquent Relationship One To Many (Materi CRUD di WEEK 4 Day 2)----------*/
+        $user = Auth::user();
+        $posts = $user -> post;     //ini mengambil dari model User.php ke fungsi 'post'
+        // dd($posts);
         return view('posts.index', compact('posts'));   //compact ini untuk mengambil data dari array
     }
     public function show($id){

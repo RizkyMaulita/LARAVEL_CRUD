@@ -36,4 +36,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //One To One
+    public function profile(){
+        return $this -> hasOne('App\Profile');          //karena fk nya ada di profile, maka di model user ditulis hasOne
+        // return $this-> hasOne('App\Profile', 'foreign_key');     //ini digunakan jika nama fknya tidak mengikuti konversi singular-plural dari laravel
+    }
+
+    //One To Many
+    public function post(){
+        return $this -> hasMany('App\Post');        //di user tidak ada fk post. hanya di table post yang ada fknya 
+    }       //mau lihat ini work atau gak, see di PostController@index
 }
