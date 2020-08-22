@@ -13,7 +13,10 @@
                             {{ session('success')}}
                         </div>
                   @endif
-                <a class="btn btn-primary mb-2" href="/posts/create"> Create New Post</a>
+                                  <!-- ini pakai route biasa -->
+                <!-- <a class="btn btn-primary mb-2" href="/posts/create"> Create New Post</a> -->
+                                  <!-- ini pakai nama route -->
+                <a class="btn btn-primary mb-2" href="{{ route ('posts.create') }}"> Create New Post</a>
                 <table class="table table-bordered">
                   <thead>                  
                     <tr>
@@ -39,8 +42,13 @@
                             <td> {{ $post -> title }} </td>
                             <td> {{ $post -> body }} </td>
                             <td style='display:flex;'> 
-                                <a href="/posts/{{$post->id}}" class="btn btn-info btn-im"> Show </a>
-                                <a href="/posts/{{$post->id}}/edit" class="btn btn-default btn-im"> Edit </a>
+                                                  <!-- jika pakai route biasa -->
+                                <!-- <a href="/posts/{{$post->id}}" class="btn btn-info btn-im"> Show </a> -->
+                                                  <!-- ini pakai nama route -->
+                                <a href="{{ route( 'posts.show', ['post' => $post-> id] ) }}" class="btn btn-info btn-im"> Show </a>
+                                <!-- <a href="/posts/{{$post->id}}/edit" class="btn btn-default btn-im"> Edit </a> -->
+                                                  <!-- ini pakai nama route -->
+                                <a href="{{ route( 'posts.edit', ['post' => $post-> id] ) }}" class="btn btn-info btn-im"> Edit </a>
                                 <form action="/posts/{{$post -> id}}" method="POST">
                                     @csrf
                                     @method('DELETE')

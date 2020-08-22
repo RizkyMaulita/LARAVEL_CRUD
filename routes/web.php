@@ -95,21 +95,6 @@ Route::delete('/posts/{id}','PostController@destroy');
 */
 //----------TASK CURD (YOU HAVE TO STUDY HARDER, LITH :") GO GO GO !!!! HAMASAHHHHHH :)) --------------------------------------------
 /*
-Route::get('/', 'PertanyaanController@index');
-Route::get('/pertanyaan', 'PertanyaanController@index');
-Route::get('/pertanyaan/create', 'PertanyaanController@create');
-Route::post('/pertanyaan', 'PertanyaanController@store');
-
-Route::get('/jawaban/{id}', 'JawabanController@index');
-Route::get('/jawaban/{id}/create', 'JawabanController@create');
-Route::post('/jawaban/{id}', 'JawabanController@store');
-Route::delete('/jawaban/{id}', 'JawabanController@destroy');
-
-Route::get('/pertanyaan/{id}', 'PertanyaanController@show');
-Route::get('/pertanyaan/{id}/edit', 'PertanyaanController@edit');
-Route::put('/pertanyaan/{id}', 'PertanyaanController@update');
-Route::delete('/pertanyaan/{id}', 'PertanyaanController@destroy');
-*/
 Route::get('/pertanyaan', 'PertanyaanController@index');
 Route::get('/pertanyaan/create', 'PertanyaanController@create');
 Route::get('/pertanyaan/{pertanyaan_id}', 'PertanyaanController@show');
@@ -117,3 +102,16 @@ Route::post('/pertanyaan', 'PertanyaanController@store');
 Route::delete('/pertanyaan/{pertanyaan_id}', 'PertanyaanController@destroy');
 Route::get('/pertanyaan/{pertanyaan_id}/edit', 'PertanyaanController@edit');
 Route::put('/pertanyaan/{pertanyaan_id}', 'PertanyaanController@update');
+*/
+
+//------ THEORY ABOUT ELOQUENT ORM LARAVEL ~ WEEK 4 DAY 1 ----------
+/*
+Route::get('/posts/create','PostController@create');
+Route::post('/posts','PostController@store');
+Route::get('/posts','PostController@index') -> name('posts.index');
+Route::get('/posts/{id}','PostController@show');   
+Route::get('/posts/{id}/edit','PostController@edit');
+Route::put('/posts/{id}', 'PostController@update');
+Route::delete('/posts/{id}','PostController@destroy');
+*/
+Route::resource('posts','PostController');
