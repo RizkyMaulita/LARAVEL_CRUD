@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB as FacadesDB;
 use Auth;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use App\Tag;
 
 // use App\User;
 
@@ -63,14 +64,79 @@ class PostController extends Controller
             2. jika misal kolomnya terlalu banyak, maka tidak usah pakai fillable tapi pakai guarded. 
                     - jadi fillable itu whitelist -> dimana isinya merupakan kolom mana saja yang mau diisi
                     - kalau guarded itu blacklist -> kolom mana saja yang tidak boleh diisi
-                    - jadi kalau misalkan semua kolomnya itu perlu diisi, $guarded = [];     */
+                    - jadi kalau misalkan semua kolomnya itu perlu diisi, $guarded = [];     
        
         $post = Post::create([
             "title" => $request['title'],
             "body" => $request['body'],
             "user_id" => Auth::id()
-        ]);        
+        ]);                                 */
+        
+        //-----------------MATERI WEEK 4 DAY 2 ---- ONE TO MANY------------------------------
+        /*------------Metode Insert untuk Dua Model yang Berelasi----------------------------------------- 
+                ini metode lain atau optional saja jika mau digunakan gapapa. but yang di mass assignment pun dapat digunakan.            */
+        /*------- Metode Pertama dengan Save ----
+        $post = Post::create([
+            'title' => $request['title'],
+            'body' => $request['body']
+        ]);
+        $user = Auth::user();
+        $user -> post() -> save($post);             */
+        
+        /*----- Metode Kedua                
+        $user = Auth::user();
+        $post = $user ->post()-> create([           //ini var $post diambil dari var $user yang didapat dari model User dengan object $post
+            'title' => $request['title'],
+            'body' => $request['body']
+        ]);                                         
 
+        /*---- Metode Ketiga dengan associate       //link : https://laravel.com/docs/6.x/eloquent-relationships#updating-belongs-to-relationships
+        $user = Auth::user();
+        $user -> post() ->associate($post);
+        $user -> save();                        // Tapi ini metode belum bisa :(      */
+        
+        // dd($request -> tags);
+
+        /* Algoritma untuk tags : 
+            1. explode untuk mengubah request tags menjadi array 
+            2. looping ke array tags tadi, buat array penampung
+            3. setiap sekali looping lakukan pengecekan apakah sudah ada tagnya
+            4. kalau sudah ada ambil idnya
+            5. kalau belum ada simpan dulu tagnya, lalu ambil idnya
+            6. tampung id di array penampung    */
+
+        $tags_arr = explode(',', $request['tags']);
+        // dd($tags_arr);
+        /*
+        $tag_ids = [];
+        foreach($tags_arr as $tag_name){
+            $tag = Tag::where('tag_name', $tag_name) -> first();
+            if ($tag){
+                $tag_ids[]= $tag -> id;
+            } else{
+                $new_tag = Tag::create(['tag_name' => $tag_name]);
+                $tag_ids[] = $new_tag -> id;
+            }
+        } 
+        */
+        // dd($tag_ids);
+        /* ada query lain yang lebih praktis untuk membuat tag ini, dengan firstOrCreate
+            link : https://laravel.com/docs/6.x/eloquent#other-creation-methods */
+        $tag_ids = [];
+        foreach($tags_arr as $tag_name){
+            $tag = Tag::firstOrCreate(['tag_name' => $tag_name]);
+            $tag_ids[]= $tag -> id;
+        }
+        
+        $user = Auth::user();
+        $post = $user -> post()-> create([
+            'title' => $request['title'],
+            'body' => $request['body']
+        ]);
+        $post -> tags() ->sync($tag_ids);               //ini untuk menggabungkan tag dengan post. jadi nanti di table post_tags sudah muncul
+        /* jadi untuk many to many, dan ingin menggabungkan kedua id/tabel, bisa pakai attach, detach, sync, dkk
+            bisa lihat di link berikut https://laravel.com/docs/6.x/eloquent-relationships#updating-many-to-many-relationships */
+        
         return redirect('/posts') -> with('success','Post Berhasil Disimpan!');
     }
     public function index(){
@@ -87,7 +153,8 @@ class PostController extends Controller
         /*--------- Ini Eloquent Relationship One To Many (Materi CRUD di WEEK 4 Day 2)----------*/
         $user = Auth::user();
         $posts = $user -> post;     //ini mengambil dari model User.php ke fungsi 'post'
-        // dd($posts);
+        // dd($posts);              //pakai ini (2 line diatas) jika kita hanya ingin menampilkan  pertanyaan2 apa saja yang dibuat oleh user tersebut di halaman index
+                                    //sehingga tidak muncul pertanyaan2 dari user lain di halaman index
         return view('posts.index', compact('posts'));   //compact ini untuk mengambil data dari array
     }
     public function show($id){

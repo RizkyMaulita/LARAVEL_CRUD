@@ -21,9 +21,16 @@
                   <div class="form-group">
                     <label for="body">Body</label>
                     <input type="text" class="form-control" id="body" name="body" value="{{ old('body','') }}" placeholder="Body">
-                    @error('title')
+                    @error('body')
                     <div class="alert alert-danger">{{ $message }}</div>
                     @enderror 
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tag</label>
+                    <input type="text" class="form-control" id="tags" name="tags" value="{{ old('tags','') }}" placeholder="Pisahkan dengan tanda koma, contoh: postingan,tag">
+                    <!-- @error('tags')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror  -->
                 </div>
              </div>
                 <!-- /.card-body -->

@@ -15,4 +15,12 @@ class Post extends Model
     public function author(){                   
         return $this -> belongsTo('App\User', 'user_id');        //ini karena d post ada fk user
     }
+
+    //Many To Many
+    public function tags(){
+        return $this -> belongsToMany('App\Tag', 'Post_Tags','post_id','tag_id');
+    }
+    /* lihat dokumentasi many to many -> https://laravel.com/docs/6.x/eloquent-relationships#many-to-many
+        disitu terlihat bahwa dalam membuat model penghubung antara 2 tabel harus diurutkan sesuai alphabetic */
+
 }
