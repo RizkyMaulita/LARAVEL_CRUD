@@ -114,4 +114,13 @@ Route::get('/posts/{id}/edit','PostController@edit');
 Route::put('/posts/{id}', 'PostController@update');
 Route::delete('/posts/{id}','PostController@destroy');
 */
+// Route::resource('posts','PostController');
+
+//------ THEORY ABOUT AUTHENTICATION ~ WEEK 4 DAY 2----------------
+Auth::routes();
+Route::get('/', function () {
+    return view('welcome');
+});
+Route::get('/home', 'HomeController@index')->name('home');      
+// Route::resource('posts','PostController') -> middleware('auth');
 Route::resource('posts','PostController');

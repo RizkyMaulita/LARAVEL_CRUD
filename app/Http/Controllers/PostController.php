@@ -7,9 +7,21 @@ use DB;
 use App\Post;       //memanggil model post
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use Auth;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        // $this -> middleware('auth');
+        // $this -> middleware('auth') -> except('index');          
+        $this -> middleware('auth') -> only ('create','store','edit','update');
+
+        /* jadi middleware ini untuk mengamankan bahwa yang hanya bisa akses ke sini hanyalah user yang sudah login
+           jika ada halaman yang dapat diakses namun user tidak perlu login terlebih dahulu, maka gunakan -> except('nama route');
+            namun jika misal ada halaman tertentu saja yang bisa diakses dengan login terlebih dahulu, maka gunakan -> only ('nama route');     */ 
+    }  
+
     public function create(){
         return view('posts.create');
     }
@@ -52,7 +64,8 @@ class PostController extends Controller
        
         $post = Post::create([
             "title" => $request['title'],
-            "body" => $request['body']
+            "body" => $request['body'],
+            "user_id" => Auth::id()
         ]);        
 
         return redirect('/posts') -> with('success','Post Berhasil Disimpan!');
