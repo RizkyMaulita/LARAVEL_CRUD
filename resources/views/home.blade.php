@@ -18,6 +18,16 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header"> Materi Laravel </div>
+
+                <div class="card-body">
+                    <p> Silahkan klik link berikut untuk menjalankan materi laravel about Posting  </p>
+                    <a href="/posts" class="btn btn-primary btn-sm m-1"> Post </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
